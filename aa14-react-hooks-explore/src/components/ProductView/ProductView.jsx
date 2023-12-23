@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductListItem from "../ProductListItem";
 import ProductDetails from "../ProductDetails";
 import "./ProductView.css";
@@ -8,28 +8,31 @@ function ProductView({ products }) {
   const [sideOpen, setSideOpen] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState();
 
-  //if selectedProduct.id === item.id
-  //isSelected === true
-  console.log(selectedProduct);
+  useEffect(() => {
+    // console.log("setSideOpen to true");
+    if (selectedProduct) setSideOpen(true);
+  }, [selectedProduct]);
 
+  useEffect(() => {
+    // console.log("SetSelectedProduct to empty");
+    if (!sideOpen) setSelectedProduct();
+  }, [sideOpen]);
+  console.log("Product View");
   return (
     <div className="product-view">
       <div className="product-main-area">
         <h1>Products</h1>
         <div className="product-list">
-          {products.map(
-            (item) => (
-              console.log(item),
-              (
-                <ProductListItem
-                  key={item.id}
-                  product={item}
-                  onClick={() => setSelectedProduct(item)}
-                  // isSelected={selectedProduct.id === item.id ? true : false}
-                />
-              )
-            )
-          )}
+          {products.map((item) => (
+            <ProductListItem
+              key={item.id}
+              product={item}
+              onClick={() => setSelectedProduct(item)}
+              isSelected={
+                selectedProduct && selectedProduct.id === item.id ? true : false
+              }
+            />
+          ))}
         </div>
       </div>
       <div className="product-side-panel">
